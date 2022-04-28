@@ -147,6 +147,13 @@ def Reset_password():
     return render_template("otp.html")
 
 
+@app.route('/get_home_page', methods=['GET', 'POST'])
+def Login():
+    books = get_all_cource_data()
+        
+    return jsonify({'responseMessage':'success', 'responseCode': 1, 'data':books})
+   
+
 
 # Set to run as Main Application
 if __name__ =="__main__":

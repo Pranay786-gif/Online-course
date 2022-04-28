@@ -173,12 +173,78 @@ def identify_user(email_id, mobile):
     except Exception as E:
         print("Kuchh erro rhai identify me. :", E)
         return [False, E]
+    
+# 28-04-2022
+# create table for cource details
+'''
+Table Name: cource_details
+Available Columns: id, cource_name, cource_code, cource_fee, cource_duration, cource_description, cource_image, cource_status
+'''
+def create_cource_table():
+    sql_command = '''CREATE TABLE IF NOT EXISTS cource_details (
+                    id SERIAL PRIMARY KEY,
+                    cource_name TEXT,
+                    cource_code TEXT,
+                    cource_fee INT,
+                    cource_duration TEXT,
+                    cource_description TEXT,
+                    cource_image TEXT,
+                    cource_status TEXT
+                    )'''
+    mycursor.execute(sql_command)
+    mydb.commit()
+    
+# insert data in cource_details
+def insert_cource_data(cource_name, cource_code, cource_fee, cource_duration, cource_description, cource_image, cource_status):
+    try:
+        sql_command = f"INSERT INTO cource_details (cource_name, cource_code, cource_fee, cource_duration, cource_description, cource_image, cource_status) VALUES ('{cource_name}', '{cource_code}', '{cource_fee}', '{cource_duration}', '{cource_description}', '{cource_image}', '{cource_status}');"
+        mycursor.execute(sql_command)
+        mydb.commit()
+        return True
+    except Exception as E:
+        print("Error in Line 62: ", E)
+        return False
+    
+# get all data from cource_details in dictionary/json format
+def get_all_cource_data():
+    sql_command = "SELECT * FROM cource_details"
+    mycursor.execute(sql_command)
+    temp = mycursor.fetchall()
+    response_data = []
+    for content in temp:
+        temp_ = {"id": content[0], "cource_name": content[1], "cource_code": content[2], "cource_fee": content[3], "cource_duration": content[4], "cource_description": content[5], "cource_image": content[6], "cource_status": content[7]}
+        response_data.append(temp_)
+    return response_data
+
+# update cource_details
+def update_cource_data(cource_id, cource_name, cource_code, cource_fee, cource_duration, cource_description, cource_image, cource_status):
+    try:
+        sql_command = f"UPDATE cource_details SET cource_name='{cource_name}', cource_code='{cource_code}', cource_fee='{cource_fee}', cource_duration='{cource_duration}', cource_description='{cource_description}', cource_image='{cource_image}', cource_status='{cource_status}' WHERE id='{cource_id}'"
+        mycursor.execute(sql_command)
+        mydb.commit()
+        return True
+    except Exception as E:
+        print("Error in Line 77: ", E)
+        return False
+    
+# delete cource_details by id
+def delete_cource_data(cource_id):
+    try:
+        sql_command = f"DELETE FROM cource_details WHERE id='{cource_id}'"
+        mycursor.execute(sql_command)
+        mydb.commit()
+        return True
+    except Exception as E:
+        print("Error in Line 85: ", E)
+        return False
+# -------------------------------------------------
+# 29-04-2022
 
 if __name__ == "__main__":
     print(mydb)
     # InsertData("Nitish Kumar", "Sahrma", "nitish.ns377@gmail.com",  "7631256855", "Motihari Bihar", "admin123")
     # print(getCredentials("nitish.ns378@gmail.com"))
-    print(get_all())
+    # print(get_all())
     # [New Code]
     # InserOTP("vramshanker23@gmail.com", "7631256855", f"{randint(1000, 9999)}", f"{randint(1000, 9999)}", "0", "0")
     # Update_otp_status("vramshanker23@gmail.com", "1")
@@ -186,9 +252,13 @@ if __name__ == "__main__":
     # print(verify_otp("vramshanker23@gmail.com", 2683))
     # Update_password("vramshanker23@gmail.com", "2683")
     
-    # delt = "DELETE FROM user_details WHERE id=4"
-    # mycursor.execute(delt)
-    # mydb.commit()
+    couse_data = get_all_cource_data()
+    response_data = []
+    for content in couse_data:
+        temp_ = {"id": content[0], "cource_name": content[1], "cource_code": content[2], "cource_fee": content[3], "cource_duration": content[4], "cource_description": content[5], "cource_image": content[6], "cource_status": content[7]}
+        response_data.append(temp_)
+        
+    print(response_data)
     
     mydb.close()
     
