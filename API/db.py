@@ -141,12 +141,12 @@ def get_all():
 # Get Eamil and Pasword From Database
 def getCredentials(email_id):
     try:
-        sql_command = f"SELECT email, password FROM user_details WHERE email='{email_id}'"
+        sql_command = f"SELECT email, password, id, fname FROM user_details WHERE email='{email_id}'"
         print(sql_command)
         mycursor.execute(sql_command)
         temp = mycursor.fetchone()
         if temp is not None:
-            return temp
+            return {'email': temp[0], 'password': temp[1], 'id': temp[2], 'fname': temp[3]}
         else:
             return None
 
@@ -243,7 +243,7 @@ def delete_cource_data(cource_id):
 if __name__ == "__main__":
     print(mydb)
     # InsertData("Nitish Kumar", "Sahrma", "nitish.ns377@gmail.com",  "7631256855", "Motihari Bihar", "admin123")
-    # print(getCredentials("nitish.ns378@gmail.com"))
+    print(getCredentials("nitish.ns378@gmail.com"))
     # print(get_all())
     # [New Code]
     # InserOTP("vramshanker23@gmail.com", "7631256855", f"{randint(1000, 9999)}", f"{randint(1000, 9999)}", "0", "0")
@@ -252,13 +252,13 @@ if __name__ == "__main__":
     # print(verify_otp("vramshanker23@gmail.com", 2683))
     # Update_password("vramshanker23@gmail.com", "2683")
     
-    couse_data = get_all_cource_data()
-    response_data = []
-    for content in couse_data:
-        temp_ = {"id": content[0], "cource_name": content[1], "cource_code": content[2], "cource_fee": content[3], "cource_duration": content[4], "cource_description": content[5], "cource_image": content[6], "cource_status": content[7]}
-        response_data.append(temp_)
+    # couse_data = get_all_cource_data()
+    # response_data = []
+    # for content in couse_data:
+    #     temp_ = {"id": content[0], "cource_name": content[1], "cource_code": content[2], "cource_fee": content[3], "cource_duration": content[4], "cource_description": content[5], "cource_image": content[6], "cource_status": content[7]}
+    #     response_data.append(temp_)
         
-    print(response_data)
+    # print(response_data)
     
     mydb.close()
     
