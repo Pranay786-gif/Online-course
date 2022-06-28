@@ -5,6 +5,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
+import {useNavigate} from "react-router-dom"
+import { ToastContainer, toast } from 'react-toastify';
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import PersonOutLineIcon from "@material-ui/icons/PersonOutline";
 import EmailIcon from "@material-ui/icons/Email";
@@ -16,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Box } from "@material-ui/core";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   "@global": {
@@ -44,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const navigate = useNavigate()
   const {
     handleSubmit,
     register,
@@ -53,11 +57,27 @@ export default function SignUp() {
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('fname', data.fname);
+    formData.append('lname', data.lname);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('phone', data.phone);
+    formData.append('address', data.address);
     console.log(data);
+   const res= await axios.post("https://abcd378.herokuapp.com/register",formData)
+   console.log(res)
+   if(res.data.responseMessage==="success"){
+    toast.success("Register Sucessfully",{autoClose:2000})
+    setTimeout(()=>{navigate("/login")},2000)
+   } else{
+    toast.error("Error in Registration, Please try again",{autoClose:2000})
+   }
   };
 
   return (
     <Container component="main" maxWidth="md">
+        <ToastContainer />
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -74,14 +94,32 @@ export default function SignUp() {
                   <PersonOutLineIcon />
                 </Avatar>
                 <TextField
-                  {...register("name")}
-                  autoComplete="name"
-                  name="name"
+                  {...register("fname")}
+                  autoComplete="fname"
+                  name="fname"
                   // variant="outlined"
                   required
                   fullWidth
-                  id="name"
-                  label="name"
+                  id="fname"
+                  label="first name"
+                  style={{ marginLeft: 6 }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                <Avatar>
+                  <PersonOutLineIcon />
+                </Avatar>
+                <TextField
+                  {...register("lname")}
+                  autoComplete="lname"
+                  name="lname"
+                  // variant="outlined"
+                  required
+                  fullWidth
+                  id="lname"
+                  label="last name"
                   style={{ marginLeft: 6 }}
                 />
               </Box>
@@ -127,12 +165,12 @@ export default function SignUp() {
                   <WorkIcon />
                 </Avatar>
                 <TextField
-                  {...register("work")}
+                  {...register("address")}
                   required
                   fullWidth
-                  id="work"
-                  label="work"
-                  name="work"
+                  id="address"
+                  label="address"
+                  name="address"
                   autoComplete="work"
                   style={{ marginLeft: 6 }}
                 />
@@ -145,10 +183,7 @@ export default function SignUp() {
                 </Avatar>
                 <TextField
                   {...register("password", {
-                    pattern: {
-                      value: /[a-zA-Z]+/g,
-                      message: "password should contains letter only",
-                    },
+                   
                   })}
                   required
                   fullWidth
@@ -166,7 +201,7 @@ export default function SignUp() {
                 ""
               )}
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <Avatar>
                   <Lock />
@@ -190,7 +225,7 @@ export default function SignUp() {
                   style={{ marginLeft: 6 }}
                 />
               </Box>
-            </Grid>
+            </Grid> */}
             {errors.cpassword ? (
               <p style={{ color: "red" }}>{errors.cpassword.message}</p>
             ) : (

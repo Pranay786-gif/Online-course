@@ -1,4 +1,7 @@
 import React from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate} from "react-router-dom"
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +16,7 @@ import Lock from "@material-ui/icons/Lock"
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import {useForm} from "react-hook-form"
+import axios from "axios";
  
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,16 +48,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = () => {
+const Login =  () => {
+    const navigate = useNavigate()
   const classes = useStyles();
   const{handleSubmit,register} =useForm()
 const onSubmit = async (data,e)=>{
   e.preventDefault();
   console.log(data)
+  const formData = new FormData();
 
+formData.append('username', data.email);
+formData.append('password', data.password);
+try{
+ const res= await axios.post("https://abcd378.herokuapp.com/login",formData)
+if(res.data.responseMessage==="success"){
+    toast.success("Login Successfully",{autoClose:2000})
+    setTimeout(()=>{navigate("/")},2000)
+} else{
+    toast.error("Incorrect Username or Password",{autoClose:2000})
+}
+} catch{
+    toast.error("Something went wrong, please try again",{autoClose:2000})
+}
 }
   return (
     <Grid container component="main" className={classes.root}>
+        <ToastContainer />
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
