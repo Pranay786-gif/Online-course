@@ -7,6 +7,8 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { set } from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -49,9 +51,13 @@ function Navbar() {
             <Link to="/contact" className={classes.link}>
               Contact
             </Link>
+            {localStorage.getItem("user_email")?<>
+             <Link onClick={()=>localStorage.clear()} to="/login" className={classes.link}>
+             Log Out 
+           </Link><ExitToAppIcon style={{marginTop:2}} /></>: 
             <Link to="/login" className={classes.link}>
               Login
-            </Link>
+            </Link>}
            
           </div>
       </Toolbar>

@@ -17,6 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import {useForm} from "react-hook-form"
 import axios from "axios";
+import Navbar from "./Navbar";
  
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,6 +63,7 @@ formData.append('password', data.password);
 try{
  const res= await axios.post("https://abcd378.herokuapp.com/login",formData)
 if(res.data.responseMessage==="success"){
+  localStorage.setItem("user_email",res.data.userId)
     toast.success("Login Successfully",{autoClose:2000})
     setTimeout(()=>{navigate("/")},2000)
 } else{
@@ -73,6 +75,7 @@ if(res.data.responseMessage==="success"){
 }
   return (
     <Grid container component="main" className={classes.root}>
+      <Navbar />
         <ToastContainer />
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
