@@ -38,9 +38,9 @@ function Navbar() {
     <AppBar position="static">
       <CssBaseline />
       <Toolbar>
-        <Typography variant="h4" className={classes.logo}>
-          <img style={{width:'100px'}} src="http://www.businessinfolink.com/images/eduonix_learning_solutions/logo_57ce57d0e4fef_edu_logo_pantone.png" alt="img"/>
-        </Typography>
+        <div variant="h4" className={classes.logo}>
+          <img style={{width:'100px'}} src="/exam-logo-new.png" alt="img"/>
+        </div>
           <div className={classes.navlinks}>
             <Link to="/" className={classes.link}>
               Home

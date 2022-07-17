@@ -64,8 +64,9 @@ try{
  const res= await axios.post("https://abcd378.herokuapp.com/login",formData)
 if(res.data.responseMessage==="success"){
   localStorage.setItem("user_email",res.data.userId)
-    toast.success("Login Successfully",{autoClose:2000})
-    setTimeout(()=>{navigate("/")},2000)
+    toast.success("Login Successfully",{autoClose:4000})
+    localStorage.setItem("key","Pranay")
+    setTimeout(()=>{window.location.replace("http://localhost:3001/dashboard")},2000)
 } else{
     toast.error("Incorrect Username or Password",{autoClose:2000})
 }
